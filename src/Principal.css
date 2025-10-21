@@ -1,0 +1,55 @@
+/* Contenedor general */
+@media (min-width: 1200px){
+.principal-container {
+    max-width: 100%;
+    padding: 40px;
+    font-family: "Arial", sans-serif;
+    background-color: #f5f6fa;
+}
+
+/* Título */
+.titulo {
+  text-align: center;
+  color: #222;
+  margin-bottom: 40px;
+}
+
+/* Grilla de juegos */
+.grid-juegos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  justify-items: center;
+}
+
+/* Cada tarjeta */
+.card-juego {
+  width: 220px;
+  background-color: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-juego:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Imagen del juego */
+.imagen-juego {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+
+/* Nombre del juego */
+.nombre-juego {
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  text-align: center;
+}
+}
