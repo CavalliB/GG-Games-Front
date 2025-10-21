@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import Principal from './Principal.jsx'
-import nav from './Nav.jsx'
+import Nav from './Nav.jsx'
 import './App.css'
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
   return (
     <div>
       <nav>
-
+        <Nav setSeccion={setSeccion} />
       </nav>
       <main>
         {seccion === 'principal' && <Principal />}
