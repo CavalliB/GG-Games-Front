@@ -1,5 +1,5 @@
 import React from "react";
-import "./Principal.css"; // importamos el CSS externo
+import "./Principal.css";
 
 function Principal({ setSeccion }) {
   const juegos = [
