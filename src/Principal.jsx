@@ -8,10 +8,10 @@ function Principal() {
   const juegos = [
     {
       id: 1,
-      nombre: "Ping pong retro",
+      nombre: "Pac-Man",
       imagen:
-        "https://tse1.mm.bing.net/th/id/OIP.l0VmreyovdydZ_dPHqty9gAAAA?cb=12ucfimg=1&rs=1&pid=ImgDetMain&o=7&rm=3",
-      ruta: "/pingpong",
+        "https://upload.wikimedia.org/wikipedia/en/5/59/Pac-man.png",
+      ruta: "/packman",
     },
     {
       id: 2,
@@ -20,6 +20,14 @@ function Principal() {
         "https://play-lh.googleusercontent.com/izLRsTSIBTQiM7cNsNNbgbJtnFKTCCa8SFBU_AJ5V921eFzZpmxVl9aYARyhdxXF7kg=w540-h302-rw",
       ruta: "/vibora",
     },
+    {
+          id: 3,
+      nombre: "Cara o Cruz",
+      imagen:
+        "https://cdn-icons-png.flaticon.com/512/992/992700.png",
+      ruta: "/caraocruz",
+    },
+    
   ];
 
   return (

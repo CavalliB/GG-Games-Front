@@ -4,26 +4,44 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: #111;
-  color: white;
+  background: radial-gradient(circle at center, #202020, #101010);
+  color: #fff;
+  font-family: "Press Start 2P", cursive;
+  text-align: center;
 }
 
-canvas {
+.tablero {
+  display: flex;
+  flex-direction: column;
+  background-color: #333;
+  border: 3px solid #66ff99;
   margin-top: 20px;
-  border: 2px solid white;
-  background-color: black;
+  box-shadow: 0 0 15px #00ff99;
 }
 
-.volver-btn {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: limegreen;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
+.fila {
+  display: flex;
 }
 
-.volver-btn:hover {
-  background-color: #00cc00;
+.celda {
+  width: 20px;
+  height: 20px;
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+  background-color: #1a1a1a;
+}
+
+.celda.snake {
+  background-color: #00ff88;
+  box-shadow: 0 0 8px #00ff88;
+}
+
+.celda.comida {
+  background-color: #ff3333;
+  box-shadow: 0 0 10px #ff3333;
+}
+
+.mensaje {
+  margin-top: 15px;
+  color: #ff5555;
+  font-size: 14px;
 }

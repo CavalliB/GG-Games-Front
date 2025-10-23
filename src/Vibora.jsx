@@ -27,9 +27,7 @@ export default function Vibora() {
     }
 
     function collision(head, array) {
-      return array.some(
-        (segment) => head.x === segment.x && head.y === segment.y
-      );
+      return array.some((segment) => head.x === segment.x && head.y === segment.y);
     }
 
     function drawGame() {
@@ -89,7 +87,6 @@ export default function Vibora() {
     <div className="vibora-container">
       <h1>🐍 Juego de la Vibora</h1>
       <canvas id="gameCanvas" width="400" height="400"></canvas>
-
       <button className="volver-btn" onClick={() => navigate("/")}>
         ⬅️ Volver al inicio
       </button>

@@ -1,0 +1,44 @@
+.caraocruz-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.moneda {
+  width: 100px;
+  height: 100px;
+  margin: 20px auto;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f5f5f5, #d4d4d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.moneda.girando {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotateY(0deg); }
+  100% { transform: rotateY(720deg); }
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #333;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+.mensaje {
+  margin-top: 10px;
+  font-size: 18px;
+}
