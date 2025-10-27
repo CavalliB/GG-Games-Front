@@ -1,0 +1,11 @@
+[
+  {
+    "nombre": "admin",
+    "password": "1234",
+    "puntajes": {
+      "pacman": 50,
+      "cara o cruz": 10,
+      "piedra papel tijera": 15
+    }
+  }
+]
