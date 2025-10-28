@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./CaraOCruz.css";
+import "./CaraoCruz.css";
 
 function CaraOCruz() {
   const [resultado, setResultado] = useState(null);
