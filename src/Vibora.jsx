@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Vibora.css";
 
 export default function Vibora() {
   const navigate = useNavigate();
+  const [resetKey, setResetKey] = useState(0); // cambia al reiniciar el juego
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     const canvas = document.getElementById("gameCanvas");
@@ -68,28 +70,33 @@ export default function Vibora() {
         snakeY >= canvas.height ||
         collision(newHead, snake)
       ) {
-        clearInterval(game);
+        clearInterval(intervalRef.current);
         alert("¡Perdiste!");
       }
 
       snake.unshift(newHead);
     }
 
-    const game = setInterval(drawGame, 100);
+    intervalRef.current = setInterval(drawGame, 100);
 
     return () => {
-      clearInterval(game);
+      clearInterval(intervalRef.current);
       document.removeEventListener("keydown", directionHandler);
     };
-  }, []);
+  }, [resetKey]); // se vuelve a ejecutar al cambiar resetKey
 
   return (
     <div className="vibora-container">
       <h1>🐍 Juego de la Vibora</h1>
       <canvas id="gameCanvas" width="400" height="400"></canvas>
-      <button className="volver-btn" onClick={() => navigate("/")}>
-        ⬅️ Volver al inicio
-      </button>
+      <div className="button-container">
+        <button className="reiniciar-btn" onClick={() => setResetKey(prev => prev + 1)}>
+          🔁 Reiniciar
+        </button>
+        <button className="volver-btn" onClick={() => navigate("/")}>
+          ⬅️ Volver al inicio
+        </button>
+      </div>
     </div>
   );
 }

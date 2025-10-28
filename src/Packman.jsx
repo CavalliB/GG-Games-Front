@@ -58,23 +58,6 @@ function Packman() {
     if (dirRef.current === "IZQUIERDA") nuevaX--;
     if (dirRef.current === "DERECHA") nuevaX++;
 
-    // bordes o muros
-const mover = (dx, dy) => {
-  const nx = pacman.x + dx;
-  const ny = pacman.y + dy;
-
-  // Si hay pared, no se mueve
-  if (mapa[ny][nx] === "#") return;
-
-  // Si hay comida, la come
-  if (mapa[ny][nx] === ".") {
-    mapa[ny][nx] = " ";
-    setPuntos(puntos + 10);
-  }
-
-  // Actualiza la posición aunque no haya comida
-  setPacman({ x: nx, y: ny });
-};
     if (nuevaX < 0 || nuevaX >= TAM || nuevaY < 0 || nuevaY >= TAM) return;
     if (mapa[nuevaY][nuevaX] === 1) return; // muro 
 
@@ -123,6 +106,10 @@ const mover = (dx, dy) => {
           </div>
         ))}
       </div>
+
+      <button className="reiniciar-btn" onClick={reiniciar}>
+        🔁 Reiniciar juego
+      </button>
     </div>
   );
 }
