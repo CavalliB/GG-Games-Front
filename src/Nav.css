@@ -16,9 +16,6 @@
   height: 40px;
   width: 40px;
   border-radius: 20px;
-  position: fixed;
-  top: 0.8%;
-  right: 0.3%;
 }
 
 .home {
@@ -28,4 +25,12 @@
   font-size: 18px;
   margin-left: 20px;
   padding:0;
+}
+
+.home:hover {
+  cursor: pointer;
+  background: transparent;
+}
+.home:focus {
+  outline: none;
 }
