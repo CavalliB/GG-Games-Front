@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Principal from "./Principal.jsx";
-import Vibora from "./Vibora.jsx";
-import Packman from "./Packman.jsx";
-import CaraoCruz from "./CaraoCruz.jsx";
+import Vibora from "./Juegos/Vibora.jsx";
+import Packman from "./Juegos/Packman.jsx";
+import CaraoCruz from "./Juegos/CaraoCruz.jsx";
 import Nav from "./Nav.jsx";
 import UsuarioLogin from "./UsuarioLogin.jsx";
 import "./App.css";

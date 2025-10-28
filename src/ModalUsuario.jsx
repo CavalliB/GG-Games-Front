@@ -29,42 +29,49 @@ const ModalUsuario = ({ isOpen, onClose, onLoginSuccess }) => {
   };
 
   const manejarRegistro = async () => {
-    if (!nombre || !password) {
-      setMensaje("Completá todos los campos.");
-      return;
-    }
-    if (usuarios.find((u) => u.nombre === nombre)) {
-      setMensaje("Ese usuario ya existe.");
-      return;
-    }
+  if (!nombre || !password) {
+    setMensaje("Completá todos los campos.");
+    return;
+  }
+  if (usuarios.find((u) => u.nombre === nombre)) {
+    setMensaje("Ese usuario ya existe.");
+    return;
+  }
 
-    const nuevoUsuario = {
-      nombre,
-      password,
-      puntajes: {
-        pacman: 0,
-        "cara o cruz": 0
-      },
-    };
-
-    const nuevosUsuarios = [...usuarios, nuevoUsuario];
-    await guardarUsuarios(nuevosUsuarios);
-    setMensaje("Usuario registrado correctamente ✅");
+  const nuevoUsuario = {
+    nombre,
+    password,
+    puntajes: {
+      pacman: 0,
+Vibora:0,
+    },
   };
+
+  const nuevosUsuarios = [...usuarios, nuevoUsuario];
+  await guardarUsuarios(nuevosUsuarios);
+  setMensaje("Usuario registrado correctamente ✅");
+
+  // 🔹 Loguear automáticamente
+  localStorage.setItem("usuarioActivo", JSON.stringify(nuevoUsuario));
+  onLoginSuccess(nuevoUsuario);
+  onClose();
+};
+
 
   const manejarLogin = () => {
-    const usuario = usuarios.find(
-      (u) => u.nombre === nombre && u.password === password
-    );
+  const usuario = usuarios.find(
+    (u) => u.nombre === nombre && u.password === password
+  );
 
-    if (usuario) {
-      setMensaje("Inicio de sesión exitoso ✅");
-      onLoginSuccess(usuario);
-      onClose();
-    } else {
-      setMensaje("Usuario o contraseña incorrectos ❌");
-    }
-  };
+  if (usuario) {
+    setMensaje("Inicio de sesión exitoso ✅");
+    localStorage.setItem("usuarioActivo", JSON.stringify(usuario)); // 🔹 Guarda el usuario logueado
+    onLoginSuccess(usuario);
+    onClose();
+  } else {
+    setMensaje("Usuario o contraseña incorrectos ❌");
+  }
+};
 
   if (!isOpen) return null;
 

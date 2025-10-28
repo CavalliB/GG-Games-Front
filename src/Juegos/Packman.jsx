@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Packman.css";
 
-const TAM = 15; // tamaño del tablero
+const TAM = 15;
 
-// 0 = vacío, 1 = muro, 2 = punto
 const MAPA_BASE = [
   [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
   [1,2,2,2,2,2,2,1,2,2,2,2,2,2,1],
@@ -25,19 +24,27 @@ function Packman() {
   const [pos, setPos] = useState({ x: 1, y: 1 });
   const [dir, setDir] = useState("DERECHA");
   const [puntaje, setPuntaje] = useState(0);
+  const [usuarioActivo, setUsuarioActivo] = useState(null);
   const dirRef = useRef(dir);
 
   useEffect(() => {
     dirRef.current = dir;
   }, [dir]);
 
-  // Movimiento automático
+  // Cargar usuario activo y su puntaje
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("usuarioActivo"));
+    if (user) {
+      setUsuarioActivo(user);
+      setPuntaje(user.puntajes?.pacman || 0);
+    }
+  }, []);
+
   useEffect(() => {
     const intervalo = setInterval(() => mover(), 200);
     return () => clearInterval(intervalo);
   });
 
-  // Controles
   useEffect(() => {
     const handleKey = (e) => {
       if (e.key === "ArrowUp") setDir("ARRIBA");
@@ -59,16 +66,27 @@ function Packman() {
     if (dirRef.current === "DERECHA") nuevaX++;
 
     if (nuevaX < 0 || nuevaX >= TAM || nuevaY < 0 || nuevaY >= TAM) return;
-    if (mapa[nuevaY][nuevaX] === 1) return; // muro 
+    if (mapa[nuevaY][nuevaX] === 1) return;
 
-    // Comer punto
     if (mapa[nuevaY][nuevaX] === 2) {
       const nuevoMapa = mapa.map(fila => [...fila]);
       nuevoMapa[nuevaY][nuevaX] = 0;
       setMapa(nuevoMapa);
-      setPuntaje((p) => p + 10);
+      const nuevoPuntaje = puntaje + 10;
+      setPuntaje(nuevoPuntaje);
 
-      // Si no quedan puntos, reiniciar
+      // 🔹 Guardar el puntaje del usuario activo
+      if (usuarioActivo) {
+        const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+        const idx = usuarios.findIndex(u => u.nombre === usuarioActivo.nombre);
+        if (idx !== -1) {
+          usuarios[idx].puntajes.pacman = nuevoPuntaje;
+          localStorage.setItem("usuarios", JSON.stringify(usuarios));
+          localStorage.setItem("usuarioActivo", JSON.stringify(usuarios[idx]));
+          setUsuarioActivo(usuarios[idx]);
+        }
+      }
+
       const quedanPuntos = nuevoMapa.some(fila => fila.includes(2));
       if (!quedanPuntos) {
         setTimeout(() => reiniciar(), 1000);
@@ -83,12 +101,29 @@ function Packman() {
     setPos({ x: 1, y: 1 });
     setDir("DERECHA");
     setPuntaje(0);
+
+    if (usuarioActivo) {
+      const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+      const idx = usuarios.findIndex(u => u.nombre === usuarioActivo.nombre);
+      if (idx !== -1) {
+        usuarios[idx].puntajes.pacman = 0;
+        localStorage.setItem("usuarios", JSON.stringify(usuarios));
+        localStorage.setItem("usuarioActivo", JSON.stringify(usuarios[idx]));
+        setUsuarioActivo(usuarios[idx]);
+      }
+    }
   };
 
   return (
     <div className="packman-container">
       <h1>🟡 Pac-Man</h1>
+      {usuarioActivo ? (
+        <p>Jugador: 👤 {usuarioActivo.nombre}</p>
+      ) : (
+        <p style={{ color: "red" }}>⚠️ Iniciá sesión para guardar tu puntaje</p>
+      )}
       <p>Puntaje: {puntaje}</p>
+
       <div className="tablero-packman">
         {mapa.map((fila, y) => (
           <div key={y} className="fila">
