@@ -1,7 +1,7 @@
-/* import React, { useState } from "react";
+import React, { useState } from "react";
 import ModalUsuario from "./ModalUsuario";
 
-const Nav = () => {
+const UsuarioLogin = () => {
   const [modalAbierto, setModalAbierto] = useState(false);
   const [usuario, setUsuario] = useState(null);
 
@@ -31,5 +31,4 @@ const Nav = () => {
   );
 };
 
-export default Nav;
- */
+export default UsuarioLogin;
