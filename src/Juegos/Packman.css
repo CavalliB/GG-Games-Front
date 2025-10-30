@@ -53,3 +53,16 @@
   border-radius: 50%;
   box-shadow: 0 0 10px #ffff00;
 }
+
+.fantasma {
+  background-color: red;
+  border-radius: 50%;
+  box-shadow: 0 0 6px #ff0000;
+  animation: flotar 0.6s infinite alternate;
+}
+
+@keyframes flotar {
+  from { transform: translateY(0); }
+  to { transform: translateY(-3px); }
+}
+
