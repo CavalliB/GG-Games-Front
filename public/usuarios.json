@@ -5,6 +5,10 @@
     "puntajes": {
       "pacman": 50,
       "viborita": 0
+    },
+    "reseñas": {
+      "vibora": "Muy divertido pero rápido",
+      "pacman": "Está buenísimo, me hizo recordar al clásico"
     }
   }
 ]

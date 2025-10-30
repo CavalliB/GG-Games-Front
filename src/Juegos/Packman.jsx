@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Packman.css";
+import Reseña from "../Reseña";
+
 
 const TAM = 15;
 
@@ -192,7 +194,9 @@ function Packman() {
       <button className="reiniciar-btn" onClick={reiniciar}>
         🔁 Reiniciar juego
       </button>
-    </div>
+    
+    <Reseña juego="pacman" />
+</div>
   );
 }
 

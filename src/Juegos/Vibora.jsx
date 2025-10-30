@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Vibora.css";
+import Reseña from "../Reseña";
+
 
 export default function Vibora() {
   const navigate = useNavigate();
@@ -146,6 +148,7 @@ export default function Vibora() {
           ⬅️ Volver al inicio
         </button>
       </div>
+       <Reseña juego="vibora" />
     </div>
   );
 }

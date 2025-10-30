@@ -1,0 +1,45 @@
+.reseña-container {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #222;
+  color: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.reseña-container textarea {
+  width: 100%;
+  height: 80px;
+  border-radius: 8px;
+  border: none;
+  padding: 8px;
+  resize: none;
+  margin-bottom: 10px;
+  font-size: 14px;
+  background-color: #333;
+  color: white;
+}
+
+.reseña-container button {
+  background-color: #00b894;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.reseña-container button:hover {
+  background-color: #009874;
+}
+
+.guardado-msg {
+  color: #00ff88;
+  margin-top: 5px;
+}
