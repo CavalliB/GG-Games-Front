@@ -1,57 +1,69 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Reseña.css";
 
 export default function Reseña({ juego }) {
-  const [usuario, setUsuario] = useState(null);
-  const [texto, setTexto] = useState("");
-  const [guardado, setGuardado] = useState(false);
+  const [reseñas, setReseñas] = useState([]);
+  const [comentario, setComentario] = useState("");
+  const [usuarioActivo, setUsuarioActivo] = useState(null);
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("usuarioActivo"));
-    if (user) {
-      setUsuario(user);
-      setTexto(user.reseñas?.[juego] || "");
-    }
+    setUsuarioActivo(user);
+
+    const todas = JSON.parse(localStorage.getItem("reseñas")) || [];
+    const delJuego = todas.filter(r => r.juego === juego);
+    setReseñas(delJuego);
   }, [juego]);
 
-  const guardarReseña = () => {
-    if (!usuario) {
-      alert("⚠️ Tenés que iniciar sesión para dejar una reseña.");
+  const handleEnviar = () => {
+    if (!usuarioActivo) {
+      alert("Debes iniciar sesión para dejar una reseña.");
       return;
     }
 
-    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
-    const idx = usuarios.findIndex(u => u.nombre === usuario.nombre);
-    if (idx !== -1) {
-      usuarios[idx].reseñas = {
-        ...usuarios[idx].reseñas,
-        [juego]: texto
-      };
-      localStorage.setItem("usuarios", JSON.stringify(usuarios));
-      localStorage.setItem("usuarioActivo", JSON.stringify(usuarios[idx]));
-      setGuardado(true);
-      setTimeout(() => setGuardado(false), 2000);
-    }
+    if (comentario.trim() === "") return;
+
+    const nuevaReseña = {
+      id: Date.now(),
+      usuario: usuarioActivo.nombre,
+      juego,
+      comentario: comentario.trim(),
+      fecha: new Date().toLocaleDateString(),
+    };
+
+    const todas = JSON.parse(localStorage.getItem("reseñas")) || [];
+    const actualizadas = [...todas, nuevaReseña];
+    localStorage.setItem("reseñas", JSON.stringify(actualizadas));
+    setReseñas(actualizadas.filter(r => r.juego === juego));
+    setComentario("");
   };
 
   return (
     <div className="reseña-container">
-      <h3>💬 Dejá tu reseña del juego</h3>
-      {usuario ? (
-        <>
-          <textarea
-            value={texto}
-            onChange={(e) => setTexto(e.target.value)}
-            placeholder="Escribí qué te pareció el juego..."
-          ></textarea>
-          <button onClick={guardarReseña}>💾 Guardar</button>
-          {guardado && <p className="guardado-msg">✅ Reseña guardada</p>}
-        </>
-      ) : (
-        <p style={{ color: "red" }}>
-          Iniciá sesión para dejar tu reseña.
-        </p>
-      )}
+      <h3 className="reseña-titulo">Reseñas del juego</h3>
+
+      <div className="reseña-lista">
+        {reseñas.length > 0 ? (
+          reseñas.map((r) => (
+            <div key={r.id} className="reseña-item">
+              <p className="reseña-usuario">👤 {r.usuario}</p>
+              <p className="reseña-comentario">“{r.comentario}”</p>
+              <p className="reseña-fecha">{r.fecha}</p>
+            </div>
+          ))
+        ) : (
+          <p className="reseña-vacia">Aún no hay reseñas para este juego.</p>
+        )}
+      </div>
+
+      <div className="reseña-formulario">
+        <textarea
+          value={comentario}
+          onChange={(e) => setComentario(e.target.value)}
+          placeholder="Escribí tu opinión sobre este juego..."
+        ></textarea>
+        <button onClick={handleEnviar}>Enviar reseña</button>
+      </div>
     </div>
   );
 }
