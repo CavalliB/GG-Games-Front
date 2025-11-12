@@ -1,77 +1,75 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./ModalUsuario.css";
 
 const ModalUsuario = ({ isOpen, onClose, onLoginSuccess }) => {
-  const [usuarios, setUsuarios] = useState([]);
   const [nombre, setNombre] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [modo, setModo] = useState("login"); // "login" o "registro"
+  const [modo, setModo] = useState("login");
   const [mensaje, setMensaje] = useState("");
 
-  useEffect(() => {
-    const cargarUsuarios = async () => {
-      try {
-        const respuesta = await fetch("/usuarios.json");
-        const data = await respuesta.json();
-        setUsuarios(data);
-      } catch (error) {
-        console.error("Error al cargar usuarios.json:", error);
-      }
-    };
-    cargarUsuarios();
-  }, []);
+  const manejarLogin = async () => {
+    if (!email || !password) {
+      setMensaje("Completá todos los campos.");
+      return;
+    }
 
-  const guardarUsuarios = async (nuevosUsuarios) => {
-    // En frontend puro no se puede escribir en archivos locales directamente
-    // Esto es solo temporal, simula el guardado local
-    localStorage.setItem("usuarios", JSON.stringify(nuevosUsuarios));
-    setUsuarios(nuevosUsuarios);
+    try {
+      const respuesta = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // envía y guarda cookies
+        body: JSON.stringify({ Email: email, Contraseña: password }),
+      });
+
+      const data = await respuesta.json();
+
+      if (!respuesta.ok) {
+        setMensaje(data.error || "Error al iniciar sesión ❌");
+        return;
+      }
+
+      setMensaje("Inicio de sesión exitoso ✅");
+      onLoginSuccess(data.usuario);
+      onClose();
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error);
+      setMensaje("Error de conexión con el servidor ❌");
+    }
   };
 
   const manejarRegistro = async () => {
-  if (!nombre || !password) {
-    setMensaje("Completá todos los campos.");
-    return;
-  }
-  if (usuarios.find((u) => u.nombre === nombre)) {
-    setMensaje("Ese usuario ya existe.");
-    return;
-  }
+    if (!nombre || !email || !password) {
+      setMensaje("Completá todos los campos.");
+      return;
+    }
 
-  const nuevoUsuario = {
-    nombre,
-    password,
-    puntajes: {
-      pacman: 0,
-Vibora:0,
-    },
+    try {
+      const respuesta = await fetch("http://localhost:5000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          NombreUsuario: nombre,
+          Email: email,
+          Contraseña: password,
+        }),
+      });
+
+      const data = await respuesta.json();
+
+      if (!respuesta.ok) {
+        setMensaje(data.error || "Error al registrar ❌");
+        return;
+      }
+
+      setMensaje("Usuario registrado correctamente ✅");
+      // Loguea automáticamente después del registro
+      await manejarLogin();
+    } catch (error) {
+      console.error("Error al registrar:", error);
+      setMensaje("Error de conexión con el servidor ❌");
+    }
   };
-
-  const nuevosUsuarios = [...usuarios, nuevoUsuario];
-  await guardarUsuarios(nuevosUsuarios);
-  setMensaje("Usuario registrado correctamente ✅");
-
-  // 🔹 Loguear automáticamente
-  localStorage.setItem("usuarioActivo", JSON.stringify(nuevoUsuario));
-  onLoginSuccess(nuevoUsuario);
-  onClose();
-};
-
-
-  const manejarLogin = () => {
-  const usuario = usuarios.find(
-    (u) => u.nombre === nombre && u.password === password
-  );
-
-  if (usuario) {
-    setMensaje("Inicio de sesión exitoso ✅");
-    localStorage.setItem("usuarioActivo", JSON.stringify(usuario)); // 🔹 Guarda el usuario logueado
-    onLoginSuccess(usuario);
-    onClose();
-  } else {
-    setMensaje("Usuario o contraseña incorrectos ❌");
-  }
-};
 
   if (!isOpen) return null;
 
@@ -83,12 +81,22 @@ Vibora:0,
         </button>
         <h2>{modo === "login" ? "Iniciar Sesión" : "Registrarse"}</h2>
 
+        {modo === "registro" && (
+          <input
+            type="text"
+            placeholder="Nombre de usuario"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+          />
+        )}
+
         <input
-          type="text"
-          placeholder="Nombre de usuario"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
+          type="email"
+          placeholder="Correo electrónico"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
         />
+
         <input
           type="password"
           placeholder="Contraseña"
