@@ -54,3 +54,10 @@ body {
   flex-direction: column;
 }
 
+  footer {
+  flex-shrink: 0;
+  background-color: transparent;
+  color: #aaa;
+  padding: 12px 20px;
+  text-align: center;
+}

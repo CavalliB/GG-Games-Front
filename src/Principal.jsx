@@ -10,21 +10,21 @@ function Principal() {
       id: 1,
       nombre: "Pac-Man",
       imagen:
-        "https://upload.wikimedia.org/wikipedia/en/5/59/Pac-man.png",
+        "https://image.api.playstation.com/vulcan/ap/rnd/202208/0217/bQjnOXn5Qpyr8uOwiayuLBCm.png",
       ruta: "/packman",
     },
     {
       id: 2,
       nombre: "Viborita",
       imagen:
-        "https://play-lh.googleusercontent.com/izLRsTSIBTQiM7cNsNNbgbJtnFKTCCa8SFBU_AJ5V921eFzZpmxVl9aYARyhdxXF7kg=w540-h302-rw",
+        "https://www.jugandoando.com.ar/wp-content/uploads/como-jugar-a-la-viborita-en-google-1.webp",
       ruta: "/vibora",
     },
     {
           id: 3,
       nombre: "Cara o Cruz",
       imagen:
-        "https://cdn-icons-png.flaticon.com/512/992/992700.png",
+        "https://tse1.mm.bing.net/th/id/OIP.sy6fra5QIXNf5m5tkMDlpwHaHq?rs=1&pid=ImgDetMain&o=7&rm=3",
       ruta: "/caraocruz",
     },
     
@@ -50,6 +50,7 @@ function Principal() {
         ))}
       </div>
     </main>
+    
   );
 }
 

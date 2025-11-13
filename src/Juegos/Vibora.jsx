@@ -36,6 +36,10 @@ export default function Vibora() {
     document.addEventListener("keydown", directionHandler);
 
     function directionHandler(event) {
+      if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) {
+    event.preventDefault(); // ⛔ evita el scroll de la página
+   }
+      
       if (event.key === "ArrowLeft" && direction !== "RIGHT") direction = "LEFT";
       else if (event.key === "ArrowUp" && direction !== "DOWN") direction = "UP";
       else if (event.key === "ArrowRight" && direction !== "LEFT") direction = "RIGHT";

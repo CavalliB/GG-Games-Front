@@ -24,7 +24,11 @@ function App() {
           </Routes>
         </main>
       </div>
+        <footer>
+          <p>© 2025 GG Games</p>
+        </footer>
     </Router>
+    
   );
 }
 

@@ -12,7 +12,7 @@ const MAPA_BASE = [
   [1,2,2,2,2,1,2,2,2,1,2,2,2,2,1],
   [1,2,1,1,2,1,1,1,2,1,1,2,1,2,1],
   [1,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
-  [1,1,1,1,1,1,0,1,1,1,1,1,1,1,1],
+  [1,1,1,0,1,1,1,1,1,0,1,1,1,1,1],
   [1,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
   [1,2,1,1,2,1,1,1,2,1,1,2,1,2,1],
   [1,2,2,2,2,1,2,2,2,1,2,2,2,2,1],
@@ -25,7 +25,7 @@ function Packman() {
   const [mapa, setMapa] = useState(MAPA_BASE.map(fila => [...fila]));
   const [pos, setPos] = useState({ x: 1, y: 1 }); // Pac-Man
   const [fantasma, setFantasma] = useState({ x: 13, y: 11 }); // 👾 enemigo
-  const [dir, setDir] = useState("DERECHA");
+  const [dir, setDir] = useState(null);
   const [puntaje, setPuntaje] = useState(0);
   const [mejorPuntaje, setMejorPuntaje] = useState(0);
   const [usuarioActivo, setUsuarioActivo] = useState(null);
@@ -58,6 +58,8 @@ function Packman() {
 
   useEffect(() => {
     const handleKey = (e) => {
+       if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(e.key)) {
+      e.preventDefault(); }
       if (e.key === "ArrowUp") setDir("ARRIBA");
       if (e.key === "ArrowDown") setDir("ABAJO");
       if (e.key === "ArrowLeft") setDir("IZQUIERDA");
@@ -69,6 +71,7 @@ function Packman() {
 
   // 🟡 Movimiento de Pac-Man
   const mover = () => {
+    if (!dirRef.current) return; 
     let nuevaX = pos.x;
     let nuevaY = pos.y;
 
