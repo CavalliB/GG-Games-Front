@@ -8,6 +8,7 @@ export default function Vibora() {
   const navigate = useNavigate();
   const [resetKey, setResetKey] = useState(0);
   const [puntaje, setPuntaje] = useState(0);
+  const puntajeRef = useRef(0);
   const [mejorPuntaje, setMejorPuntaje] = useState(0);
   const [usuarioActivo, setUsuarioActivo] = useState(null);
   const intervalRef = useRef(null);
@@ -20,6 +21,26 @@ export default function Vibora() {
       setMejorPuntaje(user.puntajes?.vibora || 0);
     }
   }, []);
+  
+  const guardarPuntajeBD = async (puntaje) => { // Guardar puntaje en la base de datos
+  try {
+    const respuesta = await fetch("http://localhost:5000/api/partida/guardar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        juegoId: 1, // ID del juego Vibora
+        puntuacion: puntaje
+      })
+    });
+
+    const data = await respuesta.json();
+    console.log("Guardado:", data);
+
+  } catch (error) {
+    console.log("Error guardando puntaje", error);
+  }
+};
 
   useEffect(() => {
     const canvas = document.getElementById("gameCanvas");
@@ -72,7 +93,8 @@ export default function Vibora() {
 
       // 🟢 Comer comida
       if (snakeX === food.x && snakeY === food.y) {
-        setPuntaje((prev) => prev + 10); // +10 puntos
+       puntajeRef.current += 10;       // +10 puntos
+       setPuntaje(puntajeRef.current); 
         food = {
           x: Math.floor(Math.random() * 19 + 1) * box,
           y: Math.floor(Math.random() * 19 + 1) * box,
@@ -84,18 +106,20 @@ export default function Vibora() {
       const newHead = { x: snakeX, y: snakeY };
 
       // 💀 Perder si choca
-      if (
-        snakeX < 0 ||
-        snakeY < 0 ||
-        snakeX >= canvas.width ||
-        snakeY >= canvas.height ||
-        collision(newHead, snake)
-      ) {
-        clearInterval(intervalRef.current);
-        alert("💀 ¡Perdiste!");
-        actualizarMejorPuntaje();
-        return;
-      }
+if (
+  snakeX < 0 ||
+  snakeY < 0 ||
+  snakeX >= canvas.width ||
+  snakeY >= canvas.height ||
+  collision(newHead, snake)
+) {
+  clearInterval(intervalRef.current);
+  alert(`¡Perdiste! Puntaje final: ${puntajeRef.current}`);
+  guardarPuntajeBD(puntajeRef.current);
+  actualizarMejorPuntaje();
+  return;
+}
+
 
       snake.unshift(newHead);
     }
@@ -144,6 +168,7 @@ export default function Vibora() {
             actualizarMejorPuntaje();
             setResetKey(prev => prev + 1);
             setPuntaje(0);
+            puntajeRef.current = 0;
           }}
         >
           🔁 Reiniciar

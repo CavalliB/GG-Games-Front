@@ -35,6 +35,26 @@ function Packman() {
     dirRef.current = dir;
   }, [dir]);
 
+  const guardarPuntajeBD = async (puntaje) => {
+  try {
+    const respuesta = await fetch("http://localhost:5000/api/partida/guardar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({
+        juegoId: 2, // Pacman
+        puntuacion: puntaje
+      })
+    });
+
+    const data = await respuesta.json();
+    console.log("Guardado:", data);
+  } catch (error) {
+    console.log("Error guardando puntaje", error);
+  }
+};
+
+
   // 🔹 Cargar usuario activo y su mejor puntaje
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("usuarioActivo"));
@@ -110,17 +130,25 @@ function Packman() {
       // Si no quedan puntos, reiniciar
       const quedanPuntos = nuevoMapa.some(fila => fila.includes(2));
       if (!quedanPuntos) {
-        alert("🎉 ¡Ganaste!");
-        reiniciar();
-      }
+  alert(`🎉 ¡Ganaste! Puntaje final: ${puntaje}`);
+
+  guardarPuntajeBD(puntaje); // GUARDAR EN LA BD
+
+  reiniciar();
+}
+
     }
 
     // 💀 Si choca con el fantasma → pierde
-    if (nuevaX === fantasma.x && nuevaY === fantasma.y) {
-      alert("💀 ¡Perdiste! El fantasma te atrapó");
-      reiniciar();
-      return;
-    }
+  if (nuevaX === fantasma.x && nuevaY === fantasma.y) {
+  alert(`💀 ¡Perdiste! Puntaje final: ${puntaje}`);
+
+  guardarPuntajeBD(puntaje);  // GUARDAR EN LA BD
+
+  reiniciar();
+  return;
+  }
+
 
     setPos({ x: nuevaX, y: nuevaY });
   };
@@ -148,10 +176,15 @@ function Packman() {
       setFantasma({ x: nuevaX, y: nuevaY });
 
       // Si toca a Pac-Man → pierde
-      if (nuevaX === pos.x && nuevaY === pos.y) {
-        alert("💀 ¡Perdiste! El fantasma te atrapó");
-        reiniciar();
-      }
+      if (nuevaX === fantasma.x && nuevaY === fantasma.y) {
+  alert(`💀 ¡Perdiste! Puntaje final: ${puntaje}`);
+
+  guardarPuntajeBD(puntaje);  // GUARDAR EN LA BD
+
+  reiniciar();
+  return;
+}
+
     }
   };
 
