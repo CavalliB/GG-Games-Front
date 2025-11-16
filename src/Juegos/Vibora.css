@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: radial-gradient(circle at center, #202020, #101010);
+  background-color: #1f1f1f;
   color: #fff;
   font-family: "Press Start 2P", cursive;
   text-align: center;
@@ -44,4 +44,32 @@
   margin-top: 15px;
   color: #ff5555;
   font-size: 14px;
+}
+
+.reiniciar-btn {
+    background: #2f2f2f;
+    color: #ffffff;
+    padding: 12px 26px;
+    margin: 20px ;
+    border-radius: 14px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow:
+        4px 4px 10px rgba(0, 0, 0, 0.45),
+        -4px -4px 10px rgba(255, 255, 255, 0.07);
+    transition: all 0.2s ease-in-out;
+}
+
+.reiniciar-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        5px 10px 15px rgba(0, 0, 0, 0.55),
+        -4px -4px 12px rgba(255, 255, 255, 0.05);
+}
+
+.reiniciar-btn:active {
+    transform: translateY(1px);
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.6);
 }

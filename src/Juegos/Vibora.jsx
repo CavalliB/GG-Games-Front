@@ -214,7 +214,7 @@ export default function Vibora() {
           🔁 Reiniciar
         </button>
 
-        <button className="volver-btn" onClick={() => navigate("/")}>
+        <button className="reiniciar-btn" onClick={() => navigate("/")}>
           ⬅️ Volver al inicio
         </button>
       </div>
