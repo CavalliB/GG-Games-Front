@@ -8,6 +8,7 @@ const UsuarioLogin = () => {
 
   const manejarLoginSuccess = (user) => {
     setUsuario(user);
+    window.location.reload();
   };
 
   // Verificar sesión activa al cargar la página
