@@ -27,14 +27,14 @@ function Packman() {
   const [dir, setDir] = useState(null);
   const [puntaje, setPuntaje] = useState(0);
 
-  const [mejorPuntaje, setMejorPuntaje] = useState(0);  // ✔️ Mejor puntaje del usuario
+  const [mejorPuntaje, setMejorPuntaje] = useState(0);  // Mejor puntaje del usuario
   const [usuarioActivo, setUsuarioActivo] = useState(null);
   const [ranking, setRanking] = useState([]);
 
   const dirRef = useRef(dir);
   useEffect(() => { dirRef.current = dir; }, [dir]);
 
-  // 🟢 Verificación de sesión
+  // Verificación de sesión
   useEffect(() => {
     const verificarSesion = async () => {
       try {
@@ -56,7 +56,7 @@ function Packman() {
     verificarSesion();
   }, []);
 
-  // 🟢 Obtener el mejor puntaje real desde el backend
+  // Obtener el mejor puntaje real desde el backend
   useEffect(() => {
     const obtenerMejor = async () => {
       try {
@@ -74,7 +74,7 @@ function Packman() {
     obtenerMejor();
   }, []);
 
-  // 🔵 Guardar puntaje en BD
+  // Guardar puntaje en BD
   const guardarPuntajeBD = async (puntaje) => {
     try {
       const respuesta = await fetch("http://localhost:5000/api/partida/guardar", {
@@ -94,7 +94,7 @@ function Packman() {
     }
   };
 
-  // 🔥 Finalizar partida
+  // Finalizar partida
   const finalizarPartida = (mensaje) => {
     alert(`${mensaje} Puntaje final: ${puntaje}`);
     guardarPuntajeBD(puntaje);
@@ -127,7 +127,7 @@ function Packman() {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
-  // 🟢 Obtener ranking
+  // Obtener ranking
   useEffect(() => {
     const obtenerRanking = async () => {
       try {
@@ -241,8 +241,6 @@ function Packman() {
         🔁 Reiniciar juego
       </button>
 
-      <Reseña juego="pacman" />
-
       <h2>🏆 Ranking Pac-Man</h2>
 
       <table className="tabla-ranking">
@@ -266,6 +264,7 @@ function Packman() {
   ))}
 </tbody>
       </table>
+      <Reseña juegoId={2} />
     </div>
   );
 }

@@ -13,9 +13,6 @@ export default function Vibora() {
   const [ranking, setRanking] = useState([]);
   const intervalRef = useRef(null);
 
-  // ===============================================================
-  // 🔹 Cargar usuario + obtener mejor puntaje del usuario en Vibora
-  // ===============================================================
   useEffect(() => {
     const cargarUsuario = async () => {
       try {
@@ -47,9 +44,7 @@ export default function Vibora() {
     cargarUsuario();
   }, []);
 
-  // ===============================================================
-  // 🔹 Obtener ranking global del juego Vibora (juegoId = 1)
-  // ===============================================================
+  // Obtener ranking global del juego Vibora (juegoId = 1)
   useEffect(() => {
     const obtenerRanking = async () => {
       try {
@@ -64,9 +59,7 @@ export default function Vibora() {
     obtenerRanking();
   }, []);
 
-  // ===============================================================
-  // 🔹 Guardar puntaje en BD
-  // ===============================================================
+  // Guardar puntaje en BD
   const guardarPuntajeBD = async (puntaje) => {
     if (!usuarioActivo) return;
 
@@ -88,9 +81,7 @@ export default function Vibora() {
     }
   };
 
-  // ===============================================================
   // ======================= LÓGICA DEL JUEGO =======================
-  // ===============================================================
   useEffect(() => {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
@@ -140,7 +131,7 @@ export default function Vibora() {
       if (direction === "RIGHT") snakeX += box;
       if (direction === "DOWN") snakeY += box;
 
-      // 🟢 Comer comida
+      // Comer comida
       if (snakeX === food.x && snakeY === food.y) {
         puntajeRef.current += 10;
         setPuntaje(puntajeRef.current);
@@ -155,7 +146,7 @@ export default function Vibora() {
 
       const newHead = { x: snakeX, y: snakeY };
 
-      // 💀 Perder
+      // Perder
       if (
         snakeX < 0 ||
         snakeY < 0 ||
@@ -183,21 +174,19 @@ export default function Vibora() {
     };
   }, [resetKey]);
 
-  // ===============================================================
   // =========================== RENDER =============================
-  // ===============================================================
   return (
     <div className="vibora-container">
-      <h1>🐍 Juego de la Vibora</h1>
+      <h1>Juego de la Vibora</h1>
 
       {usuarioActivo ? (
-        <p>Jugador: 👤 {usuarioActivo.NombreUsuario}</p>
+        <p>Jugador: {usuarioActivo.NombreUsuario}</p>
       ) : (
-        <p style={{ color: "red" }}>⚠️ Iniciá sesión para guardar tu puntaje</p>
+        <p style={{ color: "red" }}>Iniciá sesión para guardar tu puntaje</p>
       )}
 
       <p>Puntaje actual: {puntaje}</p>
-      <p>🏆 Mejor puntaje: {mejorPuntaje}</p>
+      <p>Mejor puntaje: {mejorPuntaje}</p>
 
       <canvas id="gameCanvas" width="400" height="400"></canvas>
 
@@ -211,18 +200,16 @@ export default function Vibora() {
             puntajeRef.current = 0;
           }}
         >
-          🔁 Reiniciar
+          Reiniciar
         </button>
 
         <button className="reiniciar-btn" onClick={() => navigate("/")}>
-          ⬅️ Volver al inicio
+          Volver al inicio
         </button>
       </div>
 
-      <Reseña juego="vibora" />
-
       {/* ========================== Ranking ========================== */}
-      <h2>🏆 Ranking Vibora</h2>
+      <h2>Ranking Vibora</h2>
 
       <table className="tabla-ranking">
         <thead>
@@ -241,6 +228,7 @@ export default function Vibora() {
           ))}
         </tbody>
       </table>
+      <Reseña juegoId={1} />
     </div>
   );
 }
