@@ -10,9 +10,12 @@ export default function Vibora() {
   const puntajeRef = useRef(0);
   const [mejorPuntaje, setMejorPuntaje] = useState(0);
   const [usuarioActivo, setUsuarioActivo] = useState(null);
+  const [ranking, setRanking] = useState([]);
   const intervalRef = useRef(null);
 
-  // 🔹 Obtener usuario desde cookie (JWT)
+  // ===============================================================
+  // 🔹 Cargar usuario + obtener mejor puntaje del usuario en Vibora
+  // ===============================================================
   useEffect(() => {
     const cargarUsuario = async () => {
       try {
@@ -23,7 +26,15 @@ export default function Vibora() {
         if (res.ok) {
           const data = await res.json();
           setUsuarioActivo(data.usuario);
-          setMejorPuntaje(data.usuario.mejorPuntajes?.vibora || 0);
+
+          // Obtener mejor puntaje del usuario en Vibora
+          const resPuntaje = await fetch(
+            "http://localhost:5000/api/partida/mejor/1",
+            { credentials: "include" }
+          );
+
+          const dataPuntaje = await resPuntaje.json();
+          setMejorPuntaje(dataPuntaje.mejorPuntaje || 0);
         } else {
           setUsuarioActivo(null);
         }
@@ -36,9 +47,28 @@ export default function Vibora() {
     cargarUsuario();
   }, []);
 
-  // Guardar puntaje en la BD
+  // ===============================================================
+  // 🔹 Obtener ranking global del juego Vibora (juegoId = 1)
+  // ===============================================================
+  useEffect(() => {
+    const obtenerRanking = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/partida/ranking/1");
+        const data = await res.json();
+        setRanking(data);
+      } catch (e) {
+        console.error("Error obteniendo ranking vibora:", e);
+      }
+    };
+
+    obtenerRanking();
+  }, []);
+
+  // ===============================================================
+  // 🔹 Guardar puntaje en BD
+  // ===============================================================
   const guardarPuntajeBD = async (puntaje) => {
-    if (!usuarioActivo) return; // No guardamos si no hay sesión
+    if (!usuarioActivo) return;
 
     try {
       const respuesta = await fetch("http://localhost:5000/api/partida/guardar", {
@@ -46,7 +76,7 @@ export default function Vibora() {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
         body: JSON.stringify({
-          juegoId: 1,
+          juegoId: 1, // Vibora
           puntuacion: puntaje,
         }),
       });
@@ -58,7 +88,9 @@ export default function Vibora() {
     }
   };
 
-  // ======================= JUEGO ==========================
+  // ===============================================================
+  // ======================= LÓGICA DEL JUEGO =======================
+  // ===============================================================
   useEffect(() => {
     const canvas = document.getElementById("gameCanvas");
     const ctx = canvas.getContext("2d");
@@ -151,8 +183,9 @@ export default function Vibora() {
     };
   }, [resetKey]);
 
-  // =========================================================
-
+  // ===============================================================
+  // =========================== RENDER =============================
+  // ===============================================================
   return (
     <div className="vibora-container">
       <h1>🐍 Juego de la Vibora</h1>
@@ -187,6 +220,27 @@ export default function Vibora() {
       </div>
 
       <Reseña juego="vibora" />
+
+      {/* ========================== Ranking ========================== */}
+      <h2>🏆 Ranking Vibora</h2>
+
+      <table className="tabla-ranking">
+        <thead>
+          <tr>
+            <th>Jugador</th>
+            <th>Puntaje</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {ranking.map((fila, i) => (
+            <tr key={i}>
+              <td>{fila.Usuario?.NombreUsuario}</td>
+              <td>{fila.puntuacion}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

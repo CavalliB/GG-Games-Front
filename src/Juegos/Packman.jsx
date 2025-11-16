@@ -26,13 +26,15 @@ function Packman() {
   const [fantasma, setFantasma] = useState({ x: 13, y: 11 });
   const [dir, setDir] = useState(null);
   const [puntaje, setPuntaje] = useState(0);
-  const [mejorPuntaje, setMejorPuntaje] = useState(0);
+
+  const [mejorPuntaje, setMejorPuntaje] = useState(0);  // ✔️ Mejor puntaje del usuario
   const [usuarioActivo, setUsuarioActivo] = useState(null);
+  const [ranking, setRanking] = useState([]);
 
   const dirRef = useRef(dir);
   useEffect(() => { dirRef.current = dir; }, [dir]);
 
-  // 🟢 Nueva verificación de sesión (usa cookies, no localStorage)
+  // 🟢 Verificación de sesión
   useEffect(() => {
     const verificarSesion = async () => {
       try {
@@ -43,11 +45,6 @@ function Packman() {
         if (res.ok) {
           const data = await res.json();
           setUsuarioActivo(data.usuario);
-
-          // Si en tu BD guardás mejores puntajes por juego:
-          if (data.usuario?.puntajes?.pacman) {
-            setMejorPuntaje(data.usuario.puntajes.pacman);
-          }
         } else {
           setUsuarioActivo(null);
         }
@@ -57,6 +54,24 @@ function Packman() {
     };
 
     verificarSesion();
+  }, []);
+
+  // 🟢 Obtener el mejor puntaje real desde el backend
+  useEffect(() => {
+    const obtenerMejor = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/partida/mejor/2", {
+          credentials: "include"
+        });
+
+        const data = await res.json();
+        setMejorPuntaje(data.mejorPuntaje ?? 0);
+      } catch (e) {
+        console.error("Error obteniendo mejor puntaje:", e);
+      }
+    };
+
+    obtenerMejor();
   }, []);
 
   // 🔵 Guardar puntaje en BD
@@ -79,7 +94,7 @@ function Packman() {
     }
   };
 
-  // 🔥 Centralización de final de partida
+  // 🔥 Finalizar partida
   const finalizarPartida = (mensaje) => {
     alert(`${mensaje} Puntaje final: ${puntaje}`);
     guardarPuntajeBD(puntaje);
@@ -110,6 +125,21 @@ function Packman() {
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
+  }, []);
+
+  // 🟢 Obtener ranking
+  useEffect(() => {
+    const obtenerRanking = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/partida/ranking/2");
+        const data = await res.json();
+        setRanking(data);
+      } catch (e) {
+        console.error("Error obteniendo ranking:", e);
+      }
+    };
+
+    obtenerRanking();
   }, []);
 
   const mover = () => {
@@ -184,7 +214,9 @@ function Packman() {
       )}
 
       <p>Puntaje actual: {puntaje}</p>
-      <p>🏆 Mejor puntaje: {mejorPuntaje}</p>
+
+      {/* ✔ Mostrar mejor puntaje REAL */}
+      <p>🏆 Mejor puntaje personal: {mejorPuntaje}</p>
 
       <div className="tablero-packman">
         {mapa.map((fila, y) => (
@@ -210,6 +242,30 @@ function Packman() {
       </button>
 
       <Reseña juego="pacman" />
+
+      <h2>🏆 Ranking Pac-Man</h2>
+
+      <table className="tabla-ranking">
+        <thead>
+          <tr>
+            <th>Jugador</th>
+            <th>Puntaje</th>
+          </tr>
+        </thead>
+        <tbody>
+  {ranking.map((fila, index) => (
+    <tr key={index}>
+      <td style={{ padding: "6px 0" }}>
+        {fila.Usuario?.NombreUsuario}
+      </td>
+
+      <td style={{ padding: "6px 0" }}>
+        {fila.puntuacion}
+      </td>
+    </tr>
+  ))}
+</tbody>
+      </table>
     </div>
   );
 }
