@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './Reseña.css';
+import { API_URL } from "./config";
 
 export default function Reseñas({ juegoId }) {
   const [reseñas, setReseñas] = useState([]);
@@ -10,7 +11,7 @@ export default function Reseñas({ juegoId }) {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  const API_URL = "http://localhost:5000";
+  
 
   // ⭐ Renderizado de estrellas amarillas
 // ⭐ Renderizado de estrellas amarillas CORREGIDO

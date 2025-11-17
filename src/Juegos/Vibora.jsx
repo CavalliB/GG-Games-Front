@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Vibora.css";
 import Reseña from "../Reseña";
+import { API_URL } from "../config";
 
 export default function Vibora() {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ export default function Vibora() {
   useEffect(() => {
     const cargarUsuario = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/perfil", {
+        const res = await fetch(`${API_URL}/api/perfil`, {
           credentials: "include",
         });
 
@@ -25,10 +26,7 @@ export default function Vibora() {
           setUsuarioActivo(data.usuario);
 
           // Obtener mejor puntaje del usuario en Vibora
-          const resPuntaje = await fetch(
-            "http://localhost:5000/api/partida/mejor/1",
-            { credentials: "include" }
-          );
+          const resPuntaje = await fetch(`${API_URL}/api/partida/mejor/1`, { credentials: "include" });
 
           const dataPuntaje = await resPuntaje.json();
           setMejorPuntaje(dataPuntaje.mejorPuntaje || 0);
@@ -48,7 +46,7 @@ export default function Vibora() {
   useEffect(() => {
     const obtenerRanking = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/partida/ranking/1");
+        const res = await fetch(`${API_URL}/api/partida/ranking/1`);
         const data = await res.json();
         setRanking(data);
       } catch (e) {
@@ -64,7 +62,7 @@ export default function Vibora() {
     if (!usuarioActivo) return;
 
     try {
-      const respuesta = await fetch("http://localhost:5000/api/partida/guardar", {
+      const respuesta = await fetch(`${API_URL}/api/partida/guardar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

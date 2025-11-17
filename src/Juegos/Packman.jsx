@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./Packman.css";
 import Reseña from "../Reseña";
+import { API_URL } from "../config";
 
 const TAM = 15;
 
@@ -38,7 +39,7 @@ function Packman() {
   useEffect(() => {
     const verificarSesion = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/perfil", {
+        const res = await fetch(`${API_URL}/api/perfil`, {
           credentials: "include",
         });
 
@@ -60,7 +61,7 @@ function Packman() {
   useEffect(() => {
     const obtenerMejor = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/partida/mejor/2", {
+        const res = await fetch(`${API_URL}/api/partida/mejor/2`, {
           credentials: "include"
         });
 
@@ -77,7 +78,7 @@ function Packman() {
   // Guardar puntaje en BD
   const guardarPuntajeBD = async (puntaje) => {
     try {
-      const respuesta = await fetch("http://localhost:5000/api/partida/guardar", {
+      const respuesta = await fetch(`${API_URL}/api/partida/guardar`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -131,7 +132,7 @@ function Packman() {
   useEffect(() => {
     const obtenerRanking = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/partida/ranking/2");
+        const res = await fetch(`${API_URL}/api/partida/ranking/2`);
         const data = await res.json();
         setRanking(data);
       } catch (e) {
