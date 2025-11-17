@@ -1,0 +1,175 @@
+/* CONTENEDOR GENERAL */
+.reseña-container {
+  width: 90%;
+  max-width: 650px;
+  margin: 35px auto;
+  background: #1a1a1a;
+  padding: 30px;
+  border-radius: 16px;
+  color: #f0f0f0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.45);
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+/* TITULOS */
+.reseña-titulo {
+  font-size: 2rem;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.reseña-promedio {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 25px;
+}
+
+/* FORMULARIO */
+.reseña-formulario {
+  background: #242424;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.45);
+  margin-bottom: 25px;
+  border: 1px solid #333;
+  transition: 0.3s;
+}
+
+.reseña-formulario:hover {
+  box-shadow: inset 0 0 15px rgba(255, 215, 0, 0.15);
+}
+
+.reseña-formulario label {
+  font-weight: bold;
+  margin-bottom: 6px;
+  display: block;
+  color: #e6e6e6;
+}
+
+/* TEXTAREA BONITA */
+.reseña-formulario textarea {
+  width: 100%;
+  min-height: 95px;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 5px;
+  background: #1f1f1f;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  border: 1px solid #3a3a3a;
+  resize: none;
+  transition: 0.25s;
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+.reseña-formulario textarea:focus {
+  border-color: gold;
+  background: #252525;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+/* BOTÓN */
+.reseña-formulario button {
+  margin-top: 12px;
+  padding: 11px 22px;
+  background: linear-gradient(to right, #4a7afc, #355fe0);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.reseña-formulario button:hover {
+  transform: scale(1.06);
+  background: linear-gradient(to right, #335cc2, #2947a6);
+}
+
+/* MI RESEÑA DESTACADA */
+.mi-reseña {
+  background: #28351f;
+  border: 1px solid #7ed957;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 0 12px rgba(126, 217, 87, 0.35);
+  text-align: left;
+}
+
+/* LISTA DE RESEÑAS */
+.reseña-lista {
+  max-height: 350px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+/* TARJETAS DE OTRAS RESEÑAS */
+.reseña-item {
+  background: #252525;
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  text-align: left;
+  transition: 0.25s;
+  border: 1px solid #333;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+}
+
+.reseña-item:hover {
+  background: #2c2c2c;
+  border-color: gold;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+/* NOMBRE DE USUARIO */
+.reseña-usuario {
+  font-weight: bold;
+  font-size: 1.15rem;
+  color: #f5f5f5;
+  margin-bottom: 3px;
+}
+
+/* COMENTARIO */
+.reseña-comentario {
+  margin: 8px 0;
+  font-style: italic;
+  color: #ddd;
+  line-height: 1.4;
+}
+
+.reseña-vacia {
+  text-align: center;
+  color: #aaa;
+  font-style: italic;
+}
+
+/* ⭐ ESTRELLAS */
+.estrellas-container {
+  font-size: 1.8rem;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.estrella {
+  font-size: 28px;
+  color: #777;
+  transition: color 0.2s;
+}
+
+.estrella.filled {
+  color: gold;
+}
+
+.estrellas-container {
+  display: flex;
+  gap: 4px;
+}
+

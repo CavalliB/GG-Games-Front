@@ -1,0 +1,75 @@
+.vibora-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #1f1f1f;
+  color: #fff;
+  font-family: "Press Start 2P", cursive;
+  text-align: center;
+}
+
+.tablero {
+  display: flex;
+  flex-direction: column;
+  background-color: #333;
+  border: 3px solid #66ff99;
+  margin-top: 20px;
+  box-shadow: 0 0 15px #00ff99;
+}
+
+.fila {
+  display: flex;
+}
+
+.celda {
+  width: 20px;
+  height: 20px;
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+  background-color: #1a1a1a;
+}
+
+.celda.snake {
+  background-color: #00ff88;
+  box-shadow: 0 0 8px #00ff88;
+}
+
+.celda.comida {
+  background-color: #ff3333;
+  box-shadow: 0 0 10px #ff3333;
+}
+
+.mensaje {
+  margin-top: 15px;
+  color: #ff5555;
+  font-size: 14px;
+}
+
+.reiniciar-btn {
+    background: #2f2f2f;
+    color: #ffffff;
+    padding: 12px 26px;
+    margin: 20px ;
+    border-radius: 14px;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+    box-shadow:
+        4px 4px 10px rgba(0, 0, 0, 0.45),
+        -4px -4px 10px rgba(255, 255, 255, 0.07);
+    transition: all 0.2s ease-in-out;
+}
+
+.reiniciar-btn:hover {
+    transform: translateY(-2px);
+    box-shadow:
+        5px 10px 15px rgba(0, 0, 0, 0.55),
+        -4px -4px 12px rgba(255, 255, 255, 0.05);
+}
+
+.reiniciar-btn:active {
+    transform: translateY(1px);
+    box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
