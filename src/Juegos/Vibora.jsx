@@ -175,16 +175,16 @@ export default function Vibora() {
   // =========================== RENDER =============================
   return (
     <div className="vibora-container">
-      <h1>Juego de la Vibora</h1>
+      <h1>🐍 Juego de la Vibora</h1>
 
       {usuarioActivo ? (
-        <p>Jugador: {usuarioActivo.NombreUsuario}</p>
+        <p>Jugador: 👤 {usuarioActivo.NombreUsuario}</p>
       ) : (
         <p style={{ color: "red" }}>Iniciá sesión para guardar tu puntaje</p>
       )}
 
       <p>Puntaje actual: {puntaje}</p>
-      <p>Mejor puntaje: {mejorPuntaje}</p>
+      <p>🏆 Mejor puntaje: {mejorPuntaje}</p>
 
       <canvas id="gameCanvas" width="400" height="400"></canvas>
 
@@ -198,16 +198,16 @@ export default function Vibora() {
             puntajeRef.current = 0;
           }}
         >
-          Reiniciar
+          🔁 Reiniciar
         </button>
 
         <button className="reiniciar-btn" onClick={() => navigate("/")}>
-          Volver al inicio
+          ⬅️ Volver al inicio
         </button>
       </div>
 
       {/* ========================== Ranking ========================== */}
-      <h2>Ranking Vibora</h2>
+      <h2>🏆 Ranking Vibora</h2>
 
       <table className="tabla-ranking">
         <thead>
