@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ModalUsuario from "./ModalUsuario";
+import { API_URL } from "./config";
 
 const UsuarioLogin = () => {
   const [modalAbierto, setModalAbierto] = useState(false);
@@ -15,7 +16,7 @@ const UsuarioLogin = () => {
   useEffect(() => {
     const verificarSesion = async () => {
       try {
-        const res = await fetch("http://localhost:5000/api/perfil", {
+        const res = await fetch(`${API_URL}/api/perfil`, {
           credentials: "include", // envía cookies
         });
 
@@ -37,7 +38,7 @@ const UsuarioLogin = () => {
   // Cerrar sesión
   const handleLogout = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/logout", {
+      const res = await fetch(`${API_URL}/api/logout`, {
         method: "POST",
         credentials: "include",
       });

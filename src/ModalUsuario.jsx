@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ModalUsuario.css";
+import { API_URL } from "./config";
 
 const ModalUsuario = ({ isOpen, onClose, onLoginSuccess }) => {
   const [nombre, setNombre] = useState("");
@@ -15,7 +16,7 @@ const ModalUsuario = ({ isOpen, onClose, onLoginSuccess }) => {
     }
 
     try {
-      const respuesta = await fetch("http://localhost:5000/api/login", {
+      const respuesta = await fetch(`${API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // envía y guarda cookies
@@ -45,7 +46,7 @@ const ModalUsuario = ({ isOpen, onClose, onLoginSuccess }) => {
     }
 
     try {
-      const respuesta = await fetch("http://localhost:5000/api/register", {
+      const respuesta = await fetch(`${API_URL}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
