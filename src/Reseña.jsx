@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import './Reseña.css';
 
 export default function Reseñas({ juegoId }) {
   const [reseñas, setReseñas] = useState([]);
@@ -9,43 +10,65 @@ export default function Reseñas({ juegoId }) {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState("");
 
-  const API_URL = "http://localhost:5000"; // Cambiar si tu backend corre en otra URL
+  const API_URL = "http://localhost:5000";
 
-  // Función para renderizar estrellas
-  const renderStars = (num) => {
-    const estrellas = "⭐".repeat(num);
-    return estrellas + "☆".repeat(5 - num);
-  };
+  // ⭐ Renderizado de estrellas amarillas
+// ⭐ Renderizado de estrellas amarillas CORREGIDO
+const renderStars = (value, clickable = false) => {
+  return (
+    <div className="estrellas-container">
+      {[1, 2, 3, 4, 5].map((star) => {
+        const filled = star <= value;
 
+        return (
+          <span
+            key={star}
+            className={`estrella ${filled ? "filled" : ""}`}
+            onClick={() => {
+              if (clickable) setPuntaje(star);
+            }}
+            style={{
+              cursor: clickable ? "pointer" : "default",
+            }}
+          >
+            ★
+          </span>
+        );
+      })}
+    </div>
+  );
+};
+
+  // Cargar reseñas del backend
   useEffect(() => {
     const cargarReseñas = async () => {
       try {
         setCargando(true);
+
         const response = await fetch(`${API_URL}/api/resena/${juegoId}`, {
-          credentials: "include", // envía cookies con JWT
+          credentials: "include",
         });
 
         const text = await response.text();
         let data;
+
         try {
           data = JSON.parse(text);
         } catch {
-          throw new Error("El backend no devolvió JSON: " + text);
+          throw new Error("El backend no devolvió JSON válido: " + text);
         }
 
-        if (response.ok) {
-          setReseñas(data.reseñas);
-          setPromedio(data.promedio);
-          setMiReseña(data.miReseña);
-          if (data.miReseña) {
-            setPuntaje(data.miReseña.puntaje);
-            setComentario(data.miReseña.comentario || "");
-          }
-        } else {
-          throw new Error(data.error || "Error desconocido");
+        if (!response.ok) throw new Error(data.error || "Error desconocido");
+
+        setReseñas(data.reseñas);
+        setPromedio(data.promedio);
+        setMiReseña(data.miReseña);
+
+        if (data.miReseña) {
+          setPuntaje(data.miReseña.puntaje);
+          setComentario(data.miReseña.comentario || "");
         }
       } catch (err) {
-        console.error("Error cargando reseñas:", err);
         setError(err.message);
       } finally {
         setCargando(false);
@@ -55,6 +78,7 @@ export default function Reseñas({ juegoId }) {
     cargarReseñas();
   }, [juegoId]);
 
+  // Guardar reseña
   const guardarReseña = async (e) => {
     e.preventDefault();
     setError("");
@@ -62,87 +86,90 @@ export default function Reseñas({ juegoId }) {
     try {
       const response = await fetch(`${API_URL}/api/resena/${juegoId}`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include", // envía cookies con JWT
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ puntaje, comentario }),
       });
 
       const data = await response.json();
+
       if (!response.ok) throw new Error(data.error || "Error guardando reseña");
 
-      // Actualizar lista y mi reseña
+      // Actualiza datos en pantalla
       setMiReseña(data.reseña);
-      const otras = reseñas.filter((r) => r.id !== data.reseña.id);
-      setReseñas([data.reseña, ...otras]);
 
-      // Recalcular promedio
-      const todos = [data.reseña, ...otras];
-      const nuevoPromedio = todos.reduce((acc, r) => acc + r.puntaje, 0) / todos.length;
-      setPromedio(nuevoPromedio.toFixed(1));
+      const otras = reseñas.filter((r) => r.id !== data.reseña.id);
+      const nuevas = [data.reseña, ...otras];
+      setReseñas(nuevas);
+
+      const nuevoProm = nuevas.reduce((acc, r) => acc + r.puntaje, 0) / nuevas.length;
+      setPromedio(nuevoProm.toFixed(1));
     } catch (err) {
-      console.error("Error guardando reseña:", err);
       setError(err.message);
     }
   };
 
-  if (cargando) return <p>Cargando reseñas...</p>;
-  if (error) return <p style={{ color: "red" }}>Error: {error}</p>;
+  if (cargando) return <div style={{ textAlign: "center" }}>Cargando reseñas...</div>;
+  if (error) return <div style={{ color: "red", textAlign: "center" }}>Error: {error}</div>;
 
   return (
-    <div>
-      <h2>Reseñas del juego</h2>
-      <p>Promedio: {renderStars(Math.round(promedio))} ({promedio})</p>
+    <div className="reseña-container">
 
-      {/* Formulario para agregar o actualizar reseña */}
-      <form onSubmit={guardarReseña} style={{ marginBottom: "20px" }}>
-        <h3>{miReseña ? "Editar tu reseña" : "Agregar reseña"}</h3>
-        <label>
-          Puntaje (1-5):
-          <input
-            type="number"
-            min="1"
-            max="5"
-            value={puntaje}
-            onChange={(e) => setPuntaje(Math.min(5, Math.max(1, Number(e.target.value))))}
-          />
-        </label>
-        <br />
-        <label>
-          Comentario:
-          <textarea
-            value={comentario}
-            onChange={(e) => setComentario(e.target.value)}
-          />
-        </label>
-        <br />
-        <button type="submit">{miReseña ? "Actualizar" : "Guardar"}</button>
+      <h2 className="reseña-titulo">Reseñas</h2>
+
+      {/* ⭐ PROMEDIO – corregido, ya no tiene <div> dentro de <p> */}
+      <div className="reseña-promedio">
+        <span>Promedio:</span>
+        {renderStars(Math.round(promedio))}
+        <span>({promedio})</span>
+      </div>
+
+      {/* Formulario */}
+      <h3>{miReseña ? "Editar tu reseña" : "Agregar reseña"}</h3>
+
+      <form className="reseña-formulario" onSubmit={guardarReseña}>
+        <label>Puntaje:</label>
+        {renderStars(puntaje, true)}
+
+        <label>Comentario:</label>
+        <textarea
+          placeholder="Contanos qué te pareció (opcional)"
+          value={comentario}
+          onChange={(e) => setComentario(e.target.value)}
+        />
+
+        <button type="submit">
+          {miReseña ? "Actualizar" : "Guardar"}
+        </button>
       </form>
 
       {/* Mi reseña */}
       {miReseña && (
-        <div style={{ border: "1px solid green", padding: "10px", marginBottom: "10px" }}>
-          <strong>Tu reseña:</strong>
-          <p>Puntaje: {renderStars(miReseña.puntaje)}</p>
-          <p>Comentario: {miReseña.comentario}</p>
+        <div className="mi-reseña">
+          <div className="reseña-usuario">Tu reseña:</div>
+          <div>Puntaje: {renderStars(miReseña.puntaje)}</div>
+          <div className="reseña-comentario">{miReseña.comentario}</div>
         </div>
       )}
 
-      {/* Reseñas de otros usuarios */}
-      {reseñas.length === 0 ? (
-        <p>No hay reseñas aún</p>
-      ) : (
-        reseñas
-          .filter((r) => !miReseña || r.id !== miReseña.id)
-          .map((r) => (
-            <div key={r.id} style={{ border: "1px solid gray", padding: "10px", marginBottom: "5px" }}>
-              <strong>{r.Usuario?.NombreUsuario || "Anónimo"}</strong>
-              <p>Puntaje: {renderStars(r.puntaje)}</p>
-              <p>Comentario: {r.comentario}</p>
-            </div>
-          ))
-      )}
+      {/* Lista de reseñas */}
+      <div className="reseña-lista">
+        {reseñas.filter((r) => !miReseña || r.id !== miReseña.id).length === 0 ? (
+          <div className="reseña-vacia">No hay reseñas aún</div>
+        ) : (
+          reseñas
+            .filter((r) => !miReseña || r.id !== miReseña.id)
+            .map((r) => (
+              <div key={r.id} className="reseña-item">
+                <div className="reseña-usuario">
+                  {r.Usuario?.NombreUsuario || "Anónimo"}
+                </div>
+                <div>Puntaje: {renderStars(r.puntaje)}</div>
+                <div className="reseña-comentario">{r.comentario}</div>
+              </div>
+            ))
+        )}
+      </div>
     </div>
   );
 }
